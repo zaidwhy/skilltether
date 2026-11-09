@@ -1,0 +1,35 @@
+{
+  "name": "skilltether",
+  "version": "0.1.0",
+  "description": "Keep one .agents/ folder (skills + AGENTS.md) as the source of truth and tether Claude Code, Codex and Claude Desktop to it, without ever overwriting a hand edit.",
+  "license": "MIT",
+  "author": "Zaid Ali Syed",
+  "type": "module",
+  "bin": {
+    "skilltether": "dist/src/cli.js"
+  },
+  "files": [
+    "dist/src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "tsc -p . && node --test dist/test/"
+  },
+  "keywords": [
+    "agents-md",
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "skills",
+    "sync"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "typescript": "5.9"
+  }
+}
