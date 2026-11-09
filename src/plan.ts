@@ -8,8 +8,8 @@ import { TARGET_NAMES, type Layout, type TargetName } from "./layout.js";
 import { filePathInTree, hashTree, isLink, listSkills, pathExists, TreeLimitError, type Skill } from "./skill.js";
 import { buildSkillZip } from "./zip.js";
 
-export type Verb = "link" | "update" | "relink" | "remove" | "zip" | "import" | "ok" | "native" | "note" | "skip" | "blocked";
-export const WRITE_VERBS: ReadonlySet<Verb> = new Set(["link", "update", "relink", "remove", "zip", "import"]);
+export type Verb = "add" | "update" | "takeover" | "remove" | "zip" | "import" | "ok" | "native" | "note" | "skip" | "blocked";
+export const WRITE_VERBS: ReadonlySet<Verb> = new Set(["add", "update", "takeover", "remove", "zip", "import"]);
 
 export interface Action {
   target: TargetName;
@@ -103,7 +103,7 @@ export function shortDiff(yours: string, incoming: string): string[] {
     if (i < a.length && j < b.length && a[i] === b[j]) {
       i++;
       j++;
-    } else if (j < b.length && (i === a.length || lcs[i][j + 1] >= lcs[i + 1][j])) {
+    } else if (j < b.length && (i === a.length || lcs[i][j + 1] > lcs[i + 1][j])) {
       out.push(`+ ${b[j++]}`);
     } else {
       out.push(`- ${a[i++]}`);
@@ -123,7 +123,7 @@ function planTree(
   entry: ManifestEntry | undefined,
   force: boolean,
 ): Action {
-  if (!pathExists(dest)) return { ...base, verb: "link" };
+  if (!pathExists(dest)) return { ...base, verb: "add" };
   if (isLink(dest)) {
     if (sameTarget(dest, source)) return { ...base, verb: "ok" };
     const pointsAt = readlinkSync(dest);
@@ -148,7 +148,7 @@ function planTree(
       diff: shortDiff(editedPaths[0], filePathInTree(source, edited[0])),
     };
   }
-  if (current.hash === desired.hash) return { ...base, verb: "relink", reason: "identical copy already there" };
+  if (current.hash === desired.hash) return { ...base, verb: "takeover", reason: "identical copy already there" };
   if (force) return { ...base, verb: "update", reason: "replaces content skilltether did not write (--force)" };
   const firstDiffering = changedFiles(desired.files, current.files)[0];
   const yours = firstDiffering ? filePathInTree(dest, firstDiffering) : dest;
@@ -340,7 +340,7 @@ export function applyPlan(layout: Layout, plan: Plan, opts: ApplyOptions = {}): 
       removeTarget(a.dest);
       delete entries[a.key];
     } else if (a.kind === "tree" && a.source) {
-      if (a.verb === "relink") {
+      if (a.verb === "takeover") {
         if (copyOnly) {
           entries[a.key] = recordTree(layout, a.source, a.dest, "copy");
           continue;

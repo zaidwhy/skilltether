@@ -12,7 +12,7 @@ test("sync without --write prints the plan and changes nothing on disk", (t) => 
   const before = snapshot(home);
   const { code, out } = run(["sync", "--home", home]);
   assert.equal(code, 0);
-  assert.match(out, /\+ link\s+alpha\s+~\/\.claude\/skills\/alpha/);
+  assert.match(out, /\+ add\s+alpha\s+~\/\.claude\/skills\/alpha/);
   assert.match(out, /\+ import\s+CLAUDE\.md\s+create with @\.\.\/\.agents\/AGENTS\.md/);
   assert.match(out, /\+ zip\s+beta\.zip/);
   assert.match(out, /Dry run: nothing changed\./);
@@ -124,7 +124,7 @@ test("an identical unmanaged copy is taken over; a different one blocks", (t) =>
   writeFile(join(home, ".claude/skills/beta/SKILL.md"), skillText("beta", "Someone else's beta."));
   const { code, out } = run(["sync", "--home", home]);
   assert.equal(code, 2);
-  assert.match(out, /\+ relink\s+alpha\s+identical copy already there/);
+  assert.match(out, /\+ takeover\s+alpha\s+identical copy already there/);
   assert.match(out, /! blocked\s+beta\s+exists and was not written by skilltether/);
   assert.match(out, /- description: Someone else's beta\./);
 });

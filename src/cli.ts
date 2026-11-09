@@ -78,12 +78,12 @@ function parseArgs(argv: string[]): Options {
 }
 
 const SIGN: Record<Verb, string> = {
-  link: "+", update: "+", relink: "+", zip: "+", import: "+", remove: "-",
+  add: "+", update: "+", takeover: "+", zip: "+", import: "+", remove: "-",
   blocked: "!", ok: "=", native: "=", note: "~", skip: "~",
 };
 
 function describe(layout: Layout, a: Action): string {
-  if (a.verb === "link") return displayPath(layout, a.dest);
+  if (a.verb === "add") return displayPath(layout, a.dest);
   if (a.reason) return a.reason;
   return displayPath(layout, a.dest);
 }
@@ -147,7 +147,7 @@ function runSync(io: Io, layout: Layout, opts: Options): number {
 }
 
 const DRIFT_WORD: Partial<Record<Verb, string>> = {
-  link: "missing", update: "stale", relink: "unmanaged copy", remove: "orphaned",
+  add: "missing", update: "stale", takeover: "unmanaged copy", remove: "orphaned",
   zip: "zip out of date", import: "no AGENTS.md import", blocked: "blocked",
 };
 
