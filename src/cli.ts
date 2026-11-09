@@ -89,12 +89,13 @@ function describe(layout: Layout, a: Action): string {
 }
 
 function printActions(io: Io, layout: Layout, actions: Action[], opts: { showOk: boolean }) {
+  const width = Math.max(24, ...actions.map((a) => a.label.length + 1));
   for (const target of TARGET_NAMES) {
     const rows = actions.filter((a) => a.target === target && (opts.showOk || a.verb !== "ok"));
     io.out(target);
     if (rows.length === 0) io.out("  everything in sync");
     for (const a of rows) {
-      io.out(`  ${SIGN[a.verb]} ${a.verb.padEnd(8)} ${a.label.padEnd(24)} ${describe(layout, a)}`);
+      io.out(`  ${SIGN[a.verb]} ${a.verb.padEnd(8)} ${a.label.padEnd(width)} ${describe(layout, a)}`);
       for (const p of a.editedPaths ?? []) io.out(`             ${displayPath(layout, p)}`);
       for (const line of a.diff ?? []) io.out(`               ${line}`);
     }
@@ -216,11 +217,12 @@ function runInit(io: Io, layout: Layout, opts: Options): number {
   io.out(`source  ${displayPath(layout, layout.skillsDir)}`);
   io.out("");
   const adoptions = planAdoption(layout);
+  const width = Math.max(24, ...adoptions.map((a) => a.label.length + 1));
   const signs = { adopt: "+", same: "=", differs: "!", clash: "!", skip: "~" } as const;
   for (const a of adoptions) {
     if (a.verb === "same") continue;
     const from = a.from.map((p) => displayPath(layout, p)).join(", ");
-    io.out(`  ${signs[a.verb]} ${a.verb.padEnd(8)} ${a.label.padEnd(24)} ${a.verb === "adopt" ? `from ${from}` : a.reason}`);
+    io.out(`  ${signs[a.verb]} ${a.verb.padEnd(8)} ${a.label.padEnd(width)} ${a.verb === "adopt" ? `from ${from}` : a.reason}`);
     if (a.verb !== "adopt") io.out(`             ${from}`);
   }
   const n = (verb: string) => adoptions.filter((a) => a.verb === verb).length;
