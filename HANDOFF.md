@@ -10,3 +10,5 @@ Published to npm 2026-11-10: skilltether 0.1.0 (maintainer zaidwhy); `npx skillt
 Released 2026-11-10: skilltether 0.1.1 on npm (`status` says "zip not built" for zips that never existed). Published 2026-11-10: skilltether 0.1.2 on npm (adds `repository`, `homepage` and `bugs` to package.json, nothing else); `npm view` shows the repository URL. Tag `v0.1.2` is on the bump commit.
 
 Tag note: v0.1.1 on GitHub points at 570d410 (version bump); npm 0.1.1 is built from the next commit, which only makes `--version` read package.json. Not retagged because that needs a force-push.
+
+CI added 2026-11-10: `.github/workflows/tests.yml` runs `npm test` on Ubuntu, macOS and Windows, Node 20 and 22; 6 of 6 green on c36a414. The first run failed on Node 20 only: its test runner does not expand a quoted glob, so `npm test` now names the three test files. A new test file must be added to that script by hand. The change is on main, not in a published version (0.1.2 on npm still has the glob script; it only affects `npm test`, not the CLI). Repo homepage set to the npm page.
