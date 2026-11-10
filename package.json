@@ -1,6 +1,6 @@
 {
   "name": "skilltether",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Keep one .agents/ folder (skills + AGENTS.md) as the source of truth and tether Claude Code, Codex and Claude Desktop to it, without ever overwriting a hand edit.",
   "license": "MIT",
   "author": "Zaid Ali Syed",

@@ -7,6 +7,6 @@ Next: Zaid runs it on his setup; npm publish is his call (outward-facing).
 
 Published to npm 2026-11-10: skilltether 0.1.0 (maintainer zaidwhy); `npx skilltether@0.1.0 --help` verified from a clean directory.
 
-Released 2026-11-10: skilltether 0.1.1 on npm (`status` says "zip not built" for zips that never existed). Unreleased on main: `repository`, `homepage` and `bugs` fields in package.json; the npm page shows no source link until 0.1.2 is published (`npm version patch` + `npm publish --auth-type=web`).
+Released 2026-11-10: skilltether 0.1.1 on npm (`status` says "zip not built" for zips that never existed). Ready to publish: 0.1.2 (adds `repository`, `homepage` and `bugs` to package.json, nothing else). Tag `v0.1.2` is on the bump commit. Zaid runs `npm publish --auth-type=web` in his own terminal; npm serves 0.1.1 until then.
 
 Tag note: v0.1.1 on GitHub points at 570d410 (version bump); npm 0.1.1 is built from the next commit, which only makes `--version` read package.json. Not retagged because that needs a force-push.
