@@ -151,6 +151,12 @@ const DRIFT_WORD: Partial<Record<Verb, string>> = {
   zip: "zip out of date", import: "no AGENTS.md import", blocked: "blocked",
 };
 
+// A zip that was never built is not "out of date"; the plan's reason tells the two apart.
+function driftWord(a: { verb: Verb; reason?: string }): string | undefined {
+  if (a.verb === "zip" && a.reason?.startsWith("new")) return "zip not built";
+  return DRIFT_WORD[a.verb];
+}
+
 function runStatus(io: Io, layout: Layout): number {
   io.out(`skilltether status | ${layout.scope} scope`);
   sourceLine(io, layout);
@@ -160,14 +166,14 @@ function runStatus(io: Io, layout: Layout): number {
     const rows = plan.actions.filter((a) => a.target === target);
     const tally = new Map<string, number>();
     for (const a of rows) {
-      const word = a.verb === "ok" ? "in sync" : DRIFT_WORD[a.verb];
+      const word = a.verb === "ok" ? "in sync" : driftWord(a);
       if (word) tally.set(word, (tally.get(word) ?? 0) + 1);
     }
     const summary = [...tally.entries()].map(([word, n]) => `${n} ${word}`).join(", ") || "nothing to track";
     io.out(`${target.padEnd(15)} ${summary}`);
     for (const a of rows.filter((r) => DRIFT_WORD[r.verb])) {
       drift++;
-      io.out(`  ${SIGN[a.verb]} ${DRIFT_WORD[a.verb]!.padEnd(20)} ${a.label}`);
+      io.out(`  ${SIGN[a.verb]} ${driftWord(a)!.padEnd(20)} ${a.label}`);
       for (const p of a.editedPaths ?? []) io.out(`      ${displayPath(layout, p)}`);
     }
     if (target === "claude-desktop") io.out("  upload state unknown: Claude Desktop exposes no API to compare against");

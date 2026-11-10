@@ -88,6 +88,14 @@ test("status reports drift per target and exits 1", (t) => {
   assert.match(out, /upload state unknown/);
 });
 
+test("status calls a zip that was never built 'not built', not 'out of date'", (t) => {
+  const home = makeHome(t);
+  const { code, out } = run(["status", "--home", home]);
+  assert.equal(code, 1);
+  assert.match(out, /\+ zip not built\s+alpha\.zip/);
+  assert.doesNotMatch(out, /zip out of date/);
+});
+
 test("when linking throws, sync copies instead and still guards the copy", (t) => {
   const home = makeHome(t);
   const refuse = () => {
