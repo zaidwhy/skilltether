@@ -27,15 +27,11 @@ What breaks with the plain workarounds, and what skilltether does instead:
 
 ## Install
 
-Not on npm yet. The name `skilltether` was free on both npm and PyPI when checked on 2026-11-09 (the working folder is `agent-sync`). From a clone:
-
 ```
-npm install
-npm run build
-node dist/src/cli.js --help
+npx skilltether status
 ```
 
-Once published it runs as `npx skilltether <command>`. Node 20 or later, no runtime dependencies.
+On npm as [`skilltether`](https://www.npmjs.com/package/skilltether). Node 20 or later, no runtime dependencies. From a clone (the working folder is `agent-sync`): `npm install && npm run build && node dist/src/cli.js --help`.
 
 ## What gets written where
 
