@@ -4,6 +4,14 @@
   "description": "Keep one .agents/ folder (skills + AGENTS.md) as the source of truth and tether Claude Code, Codex and Claude Desktop to it, without ever overwriting a hand edit.",
   "license": "MIT",
   "author": "Zaid Ali Syed",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaidwhy/skilltether.git"
+  },
+  "homepage": "https://github.com/zaidwhy/skilltether#readme",
+  "bugs": {
+    "url": "https://github.com/zaidwhy/skilltether/issues"
+  },
   "type": "module",
   "bin": {
     "skilltether": "dist/src/cli.js"
