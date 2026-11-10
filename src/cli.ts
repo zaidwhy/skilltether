@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { existsSync, realpathSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { applyAdoption, planAdoption } from "./adopt.js";
@@ -8,7 +8,8 @@ import { displayPath, resolveLayout, TARGET_NAMES, type Layout, type Scope } fro
 import { applyPlan, computePlan, WRITE_VERBS, type Action, type Linker, type Verb } from "./plan.js";
 import { listSkills } from "./skill.js";
 
-const VERSION = "0.1.0";
+// dist/src/cli.js -> package root; npm always ships package.json, so the version has one home.
+const VERSION: string = JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8")).version;
 
 const HELP = `skilltether ${VERSION}
 One .agents/ folder (skills + AGENTS.md) as the source of truth for Claude Code,

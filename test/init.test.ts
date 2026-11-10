@@ -57,5 +57,6 @@ test("the built CLI runs as a bin and prints its version", () => {
   const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "src", "cli.js");
   const result = spawnSync(process.execPath, [cli, "--version"], { encoding: "utf8" });
   assert.equal(result.status, 0);
-  assert.equal(result.stdout.trim(), "0.1.0");
+  const pkg = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "..", "package.json"), "utf8"));
+  assert.equal(result.stdout.trim(), pkg.version);
 });
